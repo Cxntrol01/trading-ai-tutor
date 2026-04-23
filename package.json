@@ -1,0 +1,14 @@
+{
+  "name": "trading-ai-tutor",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": "18.x"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.35.0"
+  },
+  "scripts": {
+    "vercel-build": "echo \"no build\""
+  }
+}
