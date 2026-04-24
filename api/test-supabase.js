@@ -1,4 +1,5 @@
 // api/test-supabase.js
+console.log("DEBUG SUPABASE_URL=", (process.env.SUPABASE_URL||"(empty)").replace(/https:\/\/[^/]+/,"https://REDACTED"), "DEBUG KEY LEN=", (process.env.SUPABASE_SERVICE_ROLE_KEY||"").length);
 const { createClient } = require('@supabase/supabase-js');
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
