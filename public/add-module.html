@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Add Module</title>
+  <style>
+    body{font-family:system-ui,Arial;margin:28px;background:#f7fafc;color:#0f172a}
+    .card{background:#fff;padding:16px;border-radius:8px;box-shadow:0 1px 3px rgba(2,6,23,.06);max-width:720px}
+    input{width:100%;padding:8px;margin-top:8px;border:1px solid #e2e8f0;border-radius:6px}
+    button{margin-top:12px;padding:10px 14px;border-radius:6px;border:0;background:#2563eb;color:#fff}
+    .ok{color:#059669;margin-top:12px}
+    .err{color:#dc2626;margin-top:12px}
+    a{display:inline-block;margin-top:12px}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Add Module</h2>
+    <label>Title</label>
+    <input id="title" placeholder="e.g., Advanced Strategy" />
+    <div>
+      <button id="save">Create Module</button>
+    </div>
+    <div id="msg"></div>
+    <a href="/">Back to modules</a>
+  </div>
+
+  <script>
+    document.getElementById('save').addEventListener('click', async () => {
+      const title = document.getElementById('title').value.trim();
+      const msg = document.getElementById('msg');
+      msg.textContent = '';
+      if (!title) { msg.innerHTML = '<div class="err">Enter a title</div>'; return; }
+      try {
+        const res = await fetch('/api/add-module', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title })
+        });
+        const json = await res.json();
+        if (!json.ok) {
+          msg.innerHTML = '<div class="err">Error: ' + (json.error && JSON.stringify(json.error) || 'unknown') + '</div>';
+          return;
+        }
+        msg.innerHTML = '<div class="ok">Created: ' + (json.rows && json.rows[0] && json.rows[0].title || 'ok') + '</div>';
+        document.getElementById('title').value = '';
+      } catch (e) {
+        msg.innerHTML = '<div class="err">Network error</div>';
+      }
+    });
+  </script>
+</body>
+</html>
